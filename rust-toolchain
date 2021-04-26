@@ -1,0 +1,5 @@
+[toolchain]
+channel = "1.51.0"
+components = [ "rustfmt", "rls", "rust-src", "rust-analysis" ]
+targets = [ "x86_64-unknown-linux-gnu" ]
+profile = "default"
