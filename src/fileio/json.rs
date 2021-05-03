@@ -1,18 +1,23 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use crate::info_struct::Metadata;
-use crate::traits::FileIO;
+use crate::traits::MetaFileIO;
 
-struct Json {
+pub struct Json {
     path: PathBuf,
 }
 
 impl Json {
-    pub fn new(path: PathBuf) -> Json {
-        return Json{ path: path };
+    pub fn new<P: AsRef<Path>>(path: P) -> Json {
+        return Json{ path: path.as_ref().into() };
+    }
+
+    pub fn to_string(meta: &Metadata) -> anyhow::Result<String> {
+        let result = serde_json::to_string_pretty(meta)?;
+        Ok(result)
     }
 }
 
-impl FileIO for Json {
+impl MetaFileIO for Json {
     fn read(&self) -> anyhow::Result<Metadata> {
         let json_str = std::fs::read_to_string(&self.path)?;
         let result = serde_json::from_str(&json_str)?;
