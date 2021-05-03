@@ -56,12 +56,13 @@ impl MetaFileIO for TagLib {
         for (i, file) in self.files.iter().enumerate() {
             if let Some(file) = file {
                 let mut tag = file.tag().unwrap();
+                tag.set_track((i + 1) as u32);
                 tag.set_album(&meta.album);
                 tag.set_year(meta.date);
                 tag.set_genre(&meta.genre);
 
                 tag.set_title(&meta.tracks[i].title);
-                tag.set_title(&meta.tracks[i].artist);
+                tag.set_artist(&meta.tracks[i].artist);
                 let result = file.save();
                 if !result { anyhow::bail!("Error: could not write metadata") }
             }
