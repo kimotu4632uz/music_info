@@ -1,55 +1,24 @@
 use clap::clap_app;
 use std::str::FromStr;
 
-use anyhow::Context;
-
 use music_info::info_struct::{Metadata, Track};
 use music_info::traits::*;
 
-fn audio_files_parser(mut files: clap::Values) -> anyhow::Result<Vec<Option<String>>> {
-    let (mut result, index_flag) = if let Some(file) = files.next() {
-        let ext: Vec<_> = file.rsplitn(2, ".").collect();
-        if ext.len() == 1 {
-            anyhow::bail!("Error: only file available in argument.")
-        } else {
-            let idx: Vec<_> = ext[0].rsplitn(2, ":").collect();
-            if idx.len() == 1 {
-                let mut result = Vec::new();
-                result.push(Some(file.to_string()));
-                (result, false)
-            } else {
-                let idx_n = usize::from_str(idx[0])?;
-                let mut result = Vec::with_capacity(idx_n);
-                result.resize(idx_n, None);
-                result[idx_n - 1] = Some(format!("{}.{}", ext[1], idx[1]));
-                (result, true)
-            }
-        }
-    } else {
-        (Vec::new(), false)
-    };
+fn audio_files_parser(files: clap::Values) -> anyhow::Result<Vec<Option<String>>> {
+    let mut result = Vec::new();
+    let mut idx = 0;
 
     for file in files {
-        let ext: Vec<_> = file.rsplitn(2, ".").collect();
+        let ext: Vec<_> = file.rsplitn(2, ":").collect();
         if ext.len() == 1 {
-            anyhow::bail!("Error: only file available in argument.")
+            result.push(Some(file.into()));
+            idx += 1;
         } else {
-            let idx: Vec<_> = ext[0].rsplitn(2, ":").collect();
-            if idx.len() == 1 {
-                if index_flag {
-                    anyhow::bail!("Error: partial indexing is not supported.")
-                }
-                result.push(Some(file.to_string()));
-            } else {
-                if !index_flag {
-                    anyhow::bail!("Error: partial indexing is not supported.")
-                }
-                let idx_n = usize::from_str(idx[0]).with_context(|| "Error: index of audio file is not integer")?;
-                if idx_n > result.len() {
-                    result.resize(idx_n, None);
-                }
-                result[idx_n - 1] = Some(format!("{}.{}", ext[1], idx[1]));
+            idx = usize::from_str(ext[0])? - 1;
+            if result.len() < idx {
+                result.resize(idx, None);
             }
+            result.push(Some(ext[1].into()));
         }
     }
 
@@ -59,6 +28,7 @@ fn audio_files_parser(mut files: clap::Values) -> anyhow::Result<Vec<Option<Stri
 fn main() -> anyhow::Result<()> {
 //            (@arg json: index(2) -j --json [JSON] "output json file")
     let mut app = clap_app!(music_info =>
+        (version: "0.3.0")
         (@subcommand read =>
             (@arg json: -j --json [JSON] "output json file")
             (@arg picture: -p --picture  [PICTURE] "picture file path to write")
