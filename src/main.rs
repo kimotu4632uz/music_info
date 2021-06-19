@@ -41,7 +41,7 @@ fn main() -> anyhow::Result<()> {
         )
         (@subcommand query =>
             (@subcommand music_brainz =>
-                (@arg query: <QUERY> "query parameter to find info")
+                (@arg query: <QUERY> "query parameter to find info, syntax: https://musicbrainz.org/doc/Indexed_Search_Syntax")
             )
             (@subcommand spotify =>
                 (@arg query: <QUERY> "query parameter to find info")
