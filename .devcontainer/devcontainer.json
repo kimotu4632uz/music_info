@@ -1,0 +1,7 @@
+{
+    "name": "music_info",
+    "image": "rust-rls:1.56.0-slim-bullseye",
+    "extensions": [
+        "rust-lang.rust"
+    ]
+}
