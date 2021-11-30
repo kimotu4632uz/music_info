@@ -1,10 +1,6 @@
 {
     "name": "music_info",
-    "image": "rust:1.56.0-slim-bullseye",
-    "postStartCommand": "apt update && apt install -y git ssh pkg-config build-essential libclang-dev libtagc0-dev",
-    "runArgs": [
-        "-v", "${env:XDG_RUNTIME_DIR}/gnupg/S.gpg-agent:/root/.gnupg/S.gpg-agent",
-    ],
+    "dockerFile": "Dockerfile",
     "extensions": [
         "rust-lang.rust"
     ]
