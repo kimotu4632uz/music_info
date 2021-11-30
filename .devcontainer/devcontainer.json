@@ -1,6 +1,10 @@
 {
     "name": "music_info",
-    "image": "rust-rls:1.56.0-slim-bullseye",
+    "image": "rust:1.56.0-slim-bullseye",
+    "postStartCommand": "apt update && apt install -y git ssh pkg-config build-essential libclang-dev libtagc0-dev",
+    "runArgs": [
+        "-v", "${env:XDG_RUNTIME_DIR}/gnupg/S.gpg-agent:/root/.gnupg/S.gpg-agent",
+    ],
     "extensions": [
         "rust-lang.rust"
     ]
