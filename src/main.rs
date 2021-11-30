@@ -1,4 +1,4 @@
-use clap::clap_app;
+use clap::{clap_app, crate_version};
 use std::str::FromStr;
 
 use music_info::info_struct::{Metadata, Track};
@@ -26,9 +26,8 @@ fn audio_files_parser(files: clap::Values) -> anyhow::Result<Vec<Option<String>>
 }
 
 fn main() -> anyhow::Result<()> {
-//            (@arg json: index(2) -j --json [JSON] "output json file")
     let mut app = clap_app!(music_info =>
-        (version: "0.3.0")
+        (version: crate_version!())
         (@subcommand read =>
             (@arg json: -j --json [JSON] "output json file")
             (@arg picture: -p --picture  [PICTURE] "picture file path to write")
