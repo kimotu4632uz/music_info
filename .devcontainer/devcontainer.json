@@ -1,7 +1,0 @@
-{
-    "name": "music_info",
-    "dockerFile": "Dockerfile",
-    "extensions": [
-        "rust-lang.rust"
-    ]
-}
