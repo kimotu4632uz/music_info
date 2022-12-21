@@ -1,4 +1,4 @@
-use clap::{clap_app, crate_version};
+use clap::Parser;
 use std::str::FromStr;
 
 use music_info::info_struct::{Metadata, Track};

@@ -5,7 +5,7 @@ authors = ["kimotu4632uz <32472396+kimotu4632uz@users.noreply.github.com>"]
 edition = "2021"
 
 [dependencies]
-anyhow = "1.0.68"
+anyhow = { version = "1.0.68", features = ["backtrace"] }
 clap = "4.0.29"
 
 serde = { version = "1.0", features = ["derive"] }
