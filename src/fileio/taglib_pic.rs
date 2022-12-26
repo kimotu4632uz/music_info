@@ -1,8 +1,8 @@
 use std::path::Path;
+
 use taglib_picture::File;
 
-use crate::fileio::picture::Picture;
-use crate::traits::PictureFileIO;
+use crate::{fileio::picture::Picture, traits::PictureFileIO};
 
 pub struct TagLibPicture {
     file: File,
@@ -11,7 +11,7 @@ pub struct TagLibPicture {
 impl TagLibPicture {
     pub fn new<P: AsRef<Path>>(file: P) -> anyhow::Result<TagLibPicture> {
         let taglib_file = File::new(file)?;
-        Ok(TagLibPicture{file: taglib_file})
+        Ok(TagLibPicture { file: taglib_file })
     }
 }
 

@@ -1,10 +1,9 @@
-use std::path::Path;
 use std::borrow::Borrow;
+use std::path::Path;
 
 use taglib::{File, FileError};
 
-use crate::info_struct::*;
-use crate::traits::MetaFileIO;
+use crate::{info_struct::*, traits::MetaFileIO};
 
 pub struct TagLib {
     files: Vec<Option<File>>,
@@ -15,41 +14,63 @@ impl TagLib {
     where
         P: AsRef<Path>,
         I: IntoIterator,
-        I::Item: Borrow<Option<P>>
+        I::Item: Borrow<Option<P>>,
     {
-        let result = paths.into_iter().map(|b| {
-            b.borrow().as_ref().and_then(|p| {
-                File::new(p).map_err(|e| {
-                    match e {
-                        FileError::InvalidFileName => println!("Warning: invalid file name."),
-                        FileError::InvalidFile => println!("Warning: invalid file structure"),
-                        _ => println!("")
-                    };
-                    e
-                }).ok()
+        let result = paths
+            .into_iter()
+            .map(|b| {
+                b.borrow().as_ref().and_then(|p| {
+                    File::new(p)
+                        .map_err(|e| {
+                            match e {
+                                FileError::InvalidFileName => {
+                                    println!("Warning: invalid file name.")
+                                }
+                                FileError::InvalidFile => {
+                                    println!("Warning: invalid file structure")
+                                }
+                                _ => println!(""),
+                            };
+                            e
+                        })
+                        .ok()
+                })
             })
-        }).collect();
+            .collect();
 
-        Ok(TagLib{files: result})
+        Ok(TagLib { files: result })
     }
 }
 
 impl MetaFileIO for TagLib {
     fn read(&self) -> anyhow::Result<Metadata> {
         let first = self.files.iter().find_map(Option::as_ref).unwrap();
-        let first_tag = first.tag().map_err(|_| anyhow::anyhow!("Error: no available tag found."))?;
+        let first_tag = first
+            .tag()
+            .map_err(|_| anyhow::anyhow!("Error: no available tag found."))?;
         let mut tracks = Vec::with_capacity(self.files.len());
 
         for file in &self.files {
             if let Some(file) = file {
-                let tag = file.tag().map_err(|_| anyhow::anyhow!("Error: no available tag found."))?;
-                tracks.push(Track::new(tag.title().unwrap_or_default(), tag.artist().unwrap_or_default()));
+                let tag = file
+                    .tag()
+                    .map_err(|_| anyhow::anyhow!("Error: no available tag found."))?;
+                tracks.push(Track::new(
+                    tag.title().unwrap_or_default(),
+                    tag.artist().unwrap_or_default(),
+                ));
             } else {
                 tracks.push(Track::new("", ""));
             }
         }
 
-        Ok(Metadata::new(None, first_tag.album().unwrap_or_default(), first_tag.year().unwrap_or_default(), first_tag.genre().unwrap_or_default(), tracks))
+        Ok(Metadata::new(
+            None,
+            first_tag.album().unwrap_or_default(),
+            first_tag.year().unwrap_or_default(),
+            first_tag.genre().unwrap_or_default(),
+            tracks,
+        ))
     }
 
     fn write(&self, meta: &Metadata) -> anyhow::Result<()> {
@@ -64,7 +85,9 @@ impl MetaFileIO for TagLib {
                 tag.set_title(&meta.tracks[i].title);
                 tag.set_artist(&meta.tracks[i].artist);
                 let result = file.save();
-                if !result { anyhow::bail!("Error: could not write metadata") }
+                if !result {
+                    anyhow::bail!("Error: could not write metadata")
+                }
             }
         }
 

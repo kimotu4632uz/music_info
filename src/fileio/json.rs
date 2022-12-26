@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
-use crate::info_struct::Metadata;
-use crate::traits::MetaFileIO;
+
+use crate::{info_struct::Metadata, traits::MetaFileIO};
 
 pub struct Json {
     path: PathBuf,
@@ -8,7 +8,9 @@ pub struct Json {
 
 impl Json {
     pub fn new<P: AsRef<Path>>(path: P) -> Json {
-        return Json{ path: path.as_ref().into() };
+        return Json {
+            path: path.as_ref().into(),
+        };
     }
 
     pub fn to_string(meta: &Metadata) -> anyhow::Result<String> {

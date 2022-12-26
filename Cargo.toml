@@ -6,15 +6,15 @@ edition = "2021"
 
 [dependencies]
 anyhow = { version = "1.0.68", features = ["backtrace"] }
-clap = "4.0.29"
+clap = { version = "4.0.29", features = ["derive"] }
 
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-ureq = { version = "2.1", features = ["json"] }
-oauth2 = { version = "4.0.0", default-features = false, features = ["ureq"] }
+serde = { version = "1.0.151", features = ["derive"] }
+serde_json = "1.0.91"
+ureq = { version = "2.5.0", features = ["json"] }
+oauth2 = { version = "4.3.0", default-features = false, features = ["ureq"] }
 
 taglib = "1.0.0"
 taglib_picture = { git = "https://github.com/kimotu4632uz/rust-taglib-picture" }
 
-mime_guess = "2.0.3"
-dirs = "3.0"
+mime_guess = "2.0.4"
+dirs = "4.0.0"

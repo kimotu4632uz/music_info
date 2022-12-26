@@ -1,5 +1,7 @@
-use crate::info_struct::{Metadata, AddInfo};
-use crate::fileio::picture::Picture;
+use crate::{
+    fileio::picture::Picture,
+    info_struct::{AddInfo, Metadata},
+};
 
 pub trait MetaFileIO {
     fn read(&self) -> anyhow::Result<Metadata>;
