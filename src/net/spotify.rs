@@ -1,6 +1,4 @@
-use std::io::Read;
-use std::path::Path;
-use std::str::FromStr;
+use std::{io::Read, path::Path, str::FromStr};
 
 use crate::{
     fileio::picture::Picture,

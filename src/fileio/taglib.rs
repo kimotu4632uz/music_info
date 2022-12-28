@@ -1,5 +1,4 @@
-use std::borrow::Borrow;
-use std::path::Path;
+use std::{borrow::Borrow, path::Path};
 
 use taglib::{File, FileError};
 

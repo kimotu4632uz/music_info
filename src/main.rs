@@ -1,7 +1,6 @@
-use clap::{Parser, Subcommand};
+use std::{path::PathBuf, str::FromStr};
 
-use std::path::PathBuf;
-use std::str::FromStr;
+use clap::{Parser, Subcommand};
 
 use music_info::{
     fileio::{Json, Picture, TagLib, TagLibPicture},

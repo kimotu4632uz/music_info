@@ -1,3 +1,9 @@
+use std::{
+    cell::RefCell,
+    path::{Path, PathBuf},
+    time::{Duration, SystemTime, UNIX_EPOCH},
+};
+
 use oauth2::{
     basic::{BasicClient, BasicTokenType},
     ureq::http_client,
@@ -6,11 +12,8 @@ use oauth2::{
         TokenResponse, TokenUrl,
     },
 };
-use serde::{Deserialize, Serialize};
 
-use std::cell::RefCell;
-use std::path::{Path, PathBuf};
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use serde::{Deserialize, Serialize};
 
 pub type Token = StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>;
 
